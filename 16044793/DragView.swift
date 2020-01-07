@@ -30,8 +30,12 @@ class DragView: UIImageView {
         let dx = currentLocation!.x - startLocation!.x
         let dy = currentLocation!.y - startLocation!.y
         
-        
         var newCenter = CGPoint(x: self.center.x+dx, y: self.center.y+dy)
+        self.myDelegate?.updateAngle(x: Int(dx), y: Int(dy))
+        
+        //var newCenter = CGPoint(x : self.center.x+dx, y: self.center.y+dy)
+        //let dx = currentLocation!.x - startLocation!.x
+        //let dy = currentLocation!.y - startLocation!.y
         let halfx = self.bounds.midX
         newCenter.x = max(halfx, newCenter.x)
         newCenter.x = min(W*0.20 - halfx, newCenter.x)
@@ -50,6 +54,7 @@ class DragView: UIImageView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
         let currentLocation = touches.first?.location(in: self)
+        
         //var newCenter = CGPoint(x: 0, y:0)
         //newCenter.x = 55
         //newCenter.y = 185
