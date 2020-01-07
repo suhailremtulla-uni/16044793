@@ -34,12 +34,12 @@ class DragView: UIImageView {
         var newCenter = CGPoint(x: self.center.x+dx, y: self.center.y+dy)
         let halfx = self.bounds.midX
         newCenter.x = max(halfx, newCenter.x)
-        newCenter.x = min(W*0.15 - halfx, newCenter.x)
+        newCenter.x = min(W*0.20 - halfx, newCenter.x)
         //newCenter.x = min(self.superview!.bounds.width - 550, newCenter.x)
         
         let halfy = self.bounds.midY
-        newCenter.y = max(halfy + H*0.65, newCenter.y)
-        newCenter.y = min(H*0.65 - halfy, newCenter.y)
+        newCenter.y = max(halfy + H*0.25, newCenter.y)
+        newCenter.y = min(H*0.75 - halfy, newCenter.y)
         
         //newCenter.y = max(125, newCenter.y)
         //newCenter.y = min(self.superview!.bounds.height - 125, newCenter.y)
