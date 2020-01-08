@@ -55,15 +55,11 @@ class DragView: UIImageView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
         let currentLocation = touches.first?.location(in: self)
         
-        //var newCenter = CGPoint(x: 0, y:0)
-        //newCenter.x = 55
-        //newCenter.y = 185
-        //self.center = newCenter
+        
         self.center = lastLocation!
         
         self.myDelegate?.viewBallSpawn()
-        //ballViewSpawn.delegate() = CGPointMake(x: 55, y: 195)
-        //ballViewSpawn.delegate
+        
     }
     
     /*
