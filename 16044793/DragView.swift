@@ -39,7 +39,7 @@ class DragView: UIImageView {
         
         let halfy = self.bounds.midY
         newCenter.y = max(halfy + H*0.25, newCenter.y)
-        newCenter.y = min(H*0.75 - halfy, newCenter.y)
+        newCenter.y = min(H*0.75 - halfy, newCenter.y) 
         
         self.center = newCenter
     }
