@@ -28,6 +28,7 @@ class ViewController: UIViewController, subviewDelegate {
     var angleY: Int!
     var ballView: UIImageView!
     var birdView: UIImageView!
+    var replayButton: UIButton!
     var birdPicture: UIImageView!
     var ballsArray = [UIImageView]();
     var birdsArray = [UIImageView]();
@@ -36,7 +37,7 @@ class ViewController: UIViewController, subviewDelegate {
     let W = UIScreen.main.bounds.width
     let H = UIScreen.main.bounds.height
     
-    var timer = 20
+    var timer = 5
     var gameScore = 0
     
     var runningTimer = false
@@ -77,25 +78,23 @@ class ViewController: UIViewController, subviewDelegate {
         //Bird 1 Image Added
         birdView = UIImageView(image: nil)
         birdView.image = UIImage(named: "bird1.png")
-        birdView.frame = CGRect(x: UIScreen.main.bounds.width * 0.87, y: UIScreen.main.bounds.midY * 0.09, width: 75, height: 75)
+        birdView.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.09, width: 75, height: 75)
         self.view.addSubview(birdView)
         birdsArray.append(birdView)
         
         //Bird 2 image added
         let birdTwo = UIImageView(image: nil)
         birdTwo.image = UIImage(named: "bird4.png")
-        birdTwo.frame = CGRect(x: UIScreen.main.bounds.width * 0.87, y: UIScreen.main.bounds.midY * 0.50, width: 75, height: 75)
+        birdTwo.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.50, width: 75, height: 75)
         self.view.addSubview(birdTwo)
         birdsArray.append(birdTwo)
         
         //Bird 3 image added
         let birdThree = UIImageView(image: nil)
         birdThree.image = UIImage(named: "bird5.png")
-        birdThree.frame = CGRect(x: UIScreen.main.bounds.width * 0.87, y: UIScreen.main.bounds.midY * 0.90, width: 75, height: 75)
+        birdThree.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.90, width: 75, height: 75)
         self.view.addSubview(birdThree)
         birdsArray.append(birdThree)
-        
-        //randomBird()
         
         scoreLabel = UILabel.init()
         scoreLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 60)
@@ -118,9 +117,21 @@ class ViewController: UIViewController, subviewDelegate {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in self.timer = self.timer - 1
             self.timerLabel.text = "Time Left: " + String(self.timer)
             
+            
             if self.timer == 0 {
                 timer.invalidate()
-                self.runningTimer = false
+                self.runningTimer = false//when timer hits 0 end timer
+                
+                //adds a replay button when timer runs out
+                let replayButtonImage = UIImage(named: "replay.png") as UIImage?
+                self.replayButton = UIButton(type:UIButton.ButtonType.custom) as UIButton
+                self.replayButton.frame = CGRect(x: UIScreen.main.bounds.width * 0.38, y: UIScreen.main.bounds.midY * 0.68, width: 180, height: 110)
+                self.replayButton.setImage(replayButtonImage, for: .normal)
+                self.view.addSubview(self.replayButton)
+                
+                //removes aim from the view
+                self.aimView.removeFromSuperview();
+                
             }
         }
         
