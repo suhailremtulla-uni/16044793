@@ -28,6 +28,7 @@ class ViewController: UIViewController, subviewDelegate {
     var angleY: Int!
     var ballView: UIImageView!
     var birdView: UIImageView!
+    var gameOver: UIImageView!
     var replayButton: UIButton!
     var birdPicture: UIImageView!
     var ballsArray = [UIImageView]();
@@ -125,9 +126,15 @@ class ViewController: UIViewController, subviewDelegate {
                 //adds a replay button when timer runs out
                 let replayButtonImage = UIImage(named: "replay.png") as UIImage?
                 self.replayButton = UIButton(type:UIButton.ButtonType.custom) as UIButton
-                self.replayButton.frame = CGRect(x: UIScreen.main.bounds.width * 0.38, y: UIScreen.main.bounds.midY * 0.68, width: 180, height: 110)
+                self.replayButton.frame = CGRect(x: UIScreen.main.bounds.width * 0.38, y: UIScreen.main.bounds.midY * 0.95, width: 180, height: 110)
                 self.replayButton.setImage(replayButtonImage, for: .normal)
                 self.view.addSubview(self.replayButton)
+                
+                //add the game over image to the display
+                self.gameOver = UIImageView(image: nil)
+                self.gameOver.image = UIImage(named: "GameOver.jpg")
+                self.gameOver.frame = CGRect(x: UIScreen.main.bounds.width * 0.42, y: UIScreen.main.bounds.midY * 0.48, width: 120, height: 75)
+                self.view.addSubview(self.gameOver)
                 
                 //removes aim from the view
                 self.aimView.removeFromSuperview();
