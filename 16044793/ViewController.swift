@@ -11,10 +11,12 @@ import UIKit
 protocol subviewDelegate{
     func viewBallSpawn()
     func updateAngle(x:Int, y:Int)
+    func randomBirdSpawn()
     
 }
 
 class ViewController: UIViewController, subviewDelegate {
+    
     
     var scoreLabel = UILabel()
     var timerLabel = UILabel()
@@ -27,81 +29,81 @@ class ViewController: UIViewController, subviewDelegate {
     var angleX: Int!
     var angleY: Int!
     var ballView: UIImageView!
-    var birdView: UIImageView!
     var gameOver: UIImageView!
     var replayButton: UIButton!
     var birdPicture: UIImageView!
-    var ballsArray = [UIImageView]();
-    var birdsArray = [UIImageView]();
-    var birdPictures = ["bird1.png", "bird4.png", "bird5.png"] // array of bird images
+    var ballsArray: [UIImageView] = []
+    
+    var birdsArray = [UIImage(named: "bird1.png")!, UIImage(named: "bird4.png")!, UIImage(named: "bird5.png")!] // array of bird images
+    var birdsArrayUI: Array<UIImageView> = []
+    
     
     let W = UIScreen.main.bounds.width
     let H = UIScreen.main.bounds.height
     
-    var timer = 5
+    var timer = 20
     var gameScore = 0
     
     var runningTimer = false
     
     @IBOutlet weak var aimView: DragView!
     
-    func randomBird(){
-        //random number generated
-        print("hello")
-        let randNumbBird = Int.random(in: 0...2)
     
-        //random bird spawn
-        birdPicture = UIImageView(image: nil)
-        birdPicture.image = UIImage(named: birdPictures[randNumbBird])
-        birdPicture.frame = CGRect(x: UIScreen.main.bounds.width * 0.87, y: UIScreen.main.bounds.midY * 0.90, width: 75, height: 75)
-        //birdImage.frame = CGRectx: (UIScreen.main.bounds.width * 0.87, y: randNumbLocation, width 75, height 75)
-        var doesintersect = false;
+    
+    func randomBirdSpawn(){//calls and spawns random birds in random locations
+        let birdAmount = 5//amount of birds in the line
+        let sizeOfBird = Int(self.H)/birdAmount - 5
         
-        for bird in self.birdsArray{
-            if birdPicture.frame.intersects(bird.frame){
-                doesintersect = true;
+        for index in 0...1000{
+            let when = DispatchTime.now() + (Double(index)/2)//how often bird spawns
+            
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                while true {
+                    let randomLoc = Int(self.H)/birdAmount * Int.random(in: 0...birdAmount)//random place of bird spawning
+                    
+                    let viewBird = UIImageView(image: nil)
+                    viewBird.image = self.birdsArray.randomElement()
+                    viewBird.frame = CGRect(x: self.W-CGFloat(sizeOfBird), y: CGFloat(randomLoc), width: CGFloat(sizeOfBird), height: CGFloat(sizeOfBird))
+                    self.view.addSubview(viewBird)
+                    for birdImgView in self.birdsArrayUI{
+                        if viewBird.frame.intersects(birdImgView.frame){
+                            viewBird.removeFromSuperview()
+                            continue
+                        }
+                    }
+                    self.birdsArrayUI.append(viewBird)
+                    break;
+                }
             }
-        }
-        if doesintersect == false{
-            self.view.addSubview(birdPicture)
-            birdsArray.append(birdPicture)
         }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let background = UIImageView(image: UIImage(named: "project_background.jpg"))
+        background.frame = UIScreen.main.bounds
+        self.view.sendSubviewToBack(background)
+        self.view.addSubview(background)
+        self.view.bringSubviewToFront(scoreLabel)
+        self.view.bringSubviewToFront(timerLabel)
+        self.view.bringSubviewToFront(aimView)
+        
         aimView.myDelegate = self
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         dynamicItemBehavior = UIDynamicItemBehavior(items: [])
         dynamicAnimator.addBehavior(dynamicItemBehavior)
+
+        collisionBehavior = UICollisionBehavior(items: ballsArray)
+        birdCollision = UICollisionBehavior(items: [])
         
-        //Bird 1 Image Added
-        birdView = UIImageView(image: nil)
-        birdView.image = UIImage(named: "bird1.png")
-        birdView.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.09, width: 75, height: 75)
-        self.view.addSubview(birdView)
-        birdsArray.append(birdView)
-        
-        //Bird 2 image added
-        let birdTwo = UIImageView(image: nil)
-        birdTwo.image = UIImage(named: "bird4.png")
-        birdTwo.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.50, width: 75, height: 75)
-        self.view.addSubview(birdTwo)
-        birdsArray.append(birdTwo)
-        
-        //Bird 3 image added
-        let birdThree = UIImageView(image: nil)
-        birdThree.image = UIImage(named: "bird5.png")
-        birdThree.frame = CGRect(x: UIScreen.main.bounds.width * 0.89, y: UIScreen.main.bounds.midY * 0.90, width: 75, height: 75)
-        self.view.addSubview(birdThree)
-        birdsArray.append(birdThree)
-        
+        //creates label for the score
         scoreLabel = UILabel.init()
-        scoreLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 60)
-        scoreLabel.text = "Current Score: "
+        scoreLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 60)//sets location and size
+        scoreLabel.text = "Current Score: "//text displayed
         scoreLabel.textAlignment = .center
-        scoreLabel.textColor = UIColor.black
+        scoreLabel.textColor = UIColor.white
         scoreLabel.font = UIFont(name: "verdana", size: 18.0)
         
         self.view.addSubview(scoreLabel)
@@ -110,10 +112,12 @@ class ViewController: UIViewController, subviewDelegate {
         timerLabel.frame = CGRect(x: W * 0.30, y: H * 0.00, width: 200, height: 60)
         timerLabel.text = "Time Left: "
         timerLabel.textAlignment = .center
-        timerLabel.textColor = UIColor.black
+        timerLabel.textColor = UIColor.white
         timerLabel.font = UIFont(name: "verdana", size: 18.0)
         
         self.view.addSubview(timerLabel)
+        
+        randomBirdSpawn()//calls randomBird function to create and spawn random birds
         
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in self.timer = self.timer - 1
             self.timerLabel.text = "Time Left: " + String(self.timer)
@@ -157,11 +161,12 @@ class ViewController: UIViewController, subviewDelegate {
         self.view.addSubview(ballView)
         ballsArray.append(ballView)
         
+        
         dynamicItemBehavior.addItem(ballView)
         self.dynamicItemBehavior.addLinearVelocity(CGPoint(x: angleX * 5, y: angleY * 5), for: ballView)
         
         collisionBehavior = UICollisionBehavior(items: ballsArray)
-        dynamicAnimator.addBehavior(collisionBehavior)
+        dynamicAnimator.addBehavior(dynamicItemBehavior)
         
         collisionBehavior.addBoundary(withIdentifier: "leftBorder" as NSCopying, from: CGPoint(x: self.W * 0.0, y: self.H * 0.0), to: CGPoint(x: self.W * 0.0, y: self.H * 1.0))
         collisionBehavior.addBoundary(withIdentifier: "topBorder" as NSCopying, from: CGPoint(x: self.W * 0.0, y: self.H * 0.0), to: CGPoint(x: self.W * 1.0, y: self.H * 0.0))
@@ -171,19 +176,23 @@ class ViewController: UIViewController, subviewDelegate {
         
         dynamicAnimator.addBehavior(birdCollision)
         
+        dynamicAnimator.addBehavior(collisionBehavior)
+        
         birdCollision.action = {
             for ball in self.ballsArray{
-                for bird in self.birdsArray{
+                for bird in self.birdsArrayUI{
+                   let index = self.birdsArrayUI.firstIndex(of: bird)
                     if ball.frame.intersects(bird.frame){
                         let before = self.view.subviews.count
-                        bird.removeFromSuperview();
+                        bird.removeFromSuperview()
+                        self.birdsArrayUI.remove(at: index!)
                         let after = self.view.subviews.count
-                        
+
                         if(before != after){
                             self.gameScore += 1
                             self.scoreLabel.text = "Current Score = " + String(self.gameScore)
                         }
-                        
+
                     }
                 }
             }
