@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7537691623C8A080009938BD /* replay.png in Resources */ = {isa = PBXBuildFile; fileRef = 7537691523C8A07F009938BD /* replay.png */; };
 		7537691A23C8B55E009938BD /* GameOver.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7537691923C8B55E009938BD /* GameOver.jpg */; };
+		75455B1723CAA62200ABB340 /* gunSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75455B1623CAA62200ABB340 /* gunSound.wav */; };
 		7547C06F23C65B4400653B2C /* bird4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7547C06E23C65B4400653B2C /* bird4.png */; };
 		7547C07123C65BDD00653B2C /* bird1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7547C07023C65BDD00653B2C /* bird1.png */; };
 		7556BF5B23CA198600372271 /* project_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7556BF5A23CA198600372271 /* project_background.jpg */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		7537691523C8A07F009938BD /* replay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = replay.png; path = "../../../Mobile Computing Images/images/replay.png"; sourceTree = "<group>"; };
 		7537691923C8B55E009938BD /* GameOver.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = GameOver.jpg; path = ../../../../../../../../Users/suhailremtulla/Downloads/GameOver.jpg; sourceTree = "<group>"; };
+		75455B1623CAA62200ABB340 /* gunSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gunSound.wav; sourceTree = SOURCE_ROOT; };
 		7547C06E23C65B4400653B2C /* bird4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bird4.png; path = "../../../Mobile Computing Images/images/bird4.png"; sourceTree = "<group>"; };
 		7547C07023C65BDD00653B2C /* bird1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bird1.png; path = "../../../Mobile Computing Images/images/bird1.png"; sourceTree = "<group>"; };
 		7556BF5A23CA198600372271 /* project_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = project_background.jpg; path = ../../../../../../../../Users/suhailremtulla/Downloads/project_background.jpg; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				75AF4710237998990085E1AC /* AppDelegate.swift */,
 				75AF4712237998990085E1AC /* SceneDelegate.swift */,
 				75AF4714237998990085E1AC /* ViewController.swift */,
+				75455B1623CAA62200ABB340 /* gunSound.wav */,
 				7556BF5A23CA198600372271 /* project_background.jpg */,
 				7537691923C8B55E009938BD /* GameOver.jpg */,
 				7537691523C8A07F009938BD /* replay.png */,
@@ -273,6 +276,7 @@
 				75AF47412379A0C40085E1AC /* aim.png in Resources */,
 				7537691623C8A080009938BD /* replay.png in Resources */,
 				75AF471A2379989D0085E1AC /* Assets.xcassets in Resources */,
+				75455B1723CAA62200ABB340 /* gunSound.wav in Resources */,
 				755AD77F23C68620004ABBC9 /* images in Resources */,
 				7547C07123C65BDD00653B2C /* bird1.png in Resources */,
 				75AF4718237998990085E1AC /* Main.storyboard in Resources */,
@@ -479,6 +483,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YM5MBMH2Y4;
 				INFOPLIST_FILE = 16044793/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -499,6 +504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YM5MBMH2Y4;
 				INFOPLIST_FILE = 16044793/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

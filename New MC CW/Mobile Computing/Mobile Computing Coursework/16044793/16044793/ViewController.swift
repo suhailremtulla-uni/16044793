@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AudioToolbox
+import AVFoundation
 
 protocol subviewDelegate{
     func viewBallSpawn()
@@ -29,10 +31,13 @@ class ViewController: UIViewController, subviewDelegate {
     var angleX: Int!
     var angleY: Int!
     var ballView: UIImageView!
+    //var aimView: UIImageView!
     var gameOver: UIImageView!
     var replayButton: UIButton!
     var birdPicture: UIImageView!
     var ballsArray: [UIImageView] = []
+    var aimView = DragView(image: nil) //links aimView with DragView
+    var gunSoundEffect: AVAudioPlayer?
     
     var birdsArray = [UIImage(named: "bird1.png")!, UIImage(named: "bird4.png")!, UIImage(named: "bird5.png")!] // array of bird images
     var birdsArrayUI: Array<UIImageView> = []
@@ -45,9 +50,6 @@ class ViewController: UIViewController, subviewDelegate {
     var gameScore = 0//game score starts at 0
     
     var runningTimer = false
-    
-    @IBOutlet weak var aimView: DragView!
-    
     
     
     func randomBirdSpawn(){//calls and spawns random birds in random locations
@@ -100,13 +102,19 @@ class ViewController: UIViewController, subviewDelegate {
         collisionBehavior = UICollisionBehavior(items: ballsArray)
         birdCollision = UICollisionBehavior(items: [])
         
+        //creates the aimView --------------------------
+        aimView.image = UIImage(named: "aim.png")
+        aimView.frame = CGRect(x: W * 0.05, y:H * 0.40, width: 75, height: 75)
+        aimView.isUserInteractionEnabled = true
+        self.view.addSubview(aimView)
+        
         //creates label for the score
         scoreLabel = UILabel.init()
         scoreLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 60)//sets location and size
         scoreLabel.text = "Current Score: "//text displayed
         scoreLabel.textAlignment = .center
         scoreLabel.textColor = UIColor.white
-        scoreLabel.font = UIFont(name: "verdana", size: 18.0)
+        scoreLabel.font = UIFont(name: "verdana", size: 20.0)
         
         self.view.addSubview(scoreLabel)
         
@@ -116,7 +124,7 @@ class ViewController: UIViewController, subviewDelegate {
         timerLabel.text = "Time Left: "
         timerLabel.textAlignment = .center
         timerLabel.textColor = UIColor.white
-        timerLabel.font = UIFont(name: "verdana", size: 18.0)
+        timerLabel.font = UIFont(name: "verdana", size: 20.0)
         
         self.view.addSubview(timerLabel)
         
@@ -139,6 +147,9 @@ class ViewController: UIViewController, subviewDelegate {
                 //bring the replay button to the front
                 self.view.addSubview(self.replayButton)
                 
+                //--------------calls replay interactive function when replay button is clicked
+                self.replayButton.addTarget(self, action: #selector(self.replay), for: .touchUpInside)//calls the replay function when replay button is clicked
+                
                 //add the game over image to the display
                 //creates the game over image
                 self.gameOver = UIImageView(image: nil)
@@ -146,6 +157,8 @@ class ViewController: UIViewController, subviewDelegate {
                 self.gameOver.frame = CGRect(x: UIScreen.main.bounds.width * 0.42, y: UIScreen.main.bounds.midY * 0.48, width: 120, height: 75)
                 //brings the game over image to the front
                 self.view.addSubview(self.gameOver)
+                self.gameScore = 0
+                
                 
                 //removes aim from the view
                 self.aimView.removeFromSuperview();
@@ -153,6 +166,22 @@ class ViewController: UIViewController, subviewDelegate {
             }
         }
         
+    }
+    
+    //interactive function for replay button
+    @objc func replay(){
+        for replay in self.view.subviews{//loops through all the subviews and restarts them
+            replay.removeFromSuperview()//takes away the replay button
+            ballsArray.removeAll()//clears the ballsArray array
+            //birdsArray.removeAll()
+            gameScore = 0//resets the gameScore variable
+            self.scoreLabel.text = "Current Score = " + String(self.gameScore)//displays the game current game score
+            timer = 20//resets the timer to 20
+            self.timerLabel.text = "Time Left: " + String(self.timer)//displays current time left
+            self.aimView.isHidden = false
+            
+        }
+        viewDidLoad()//calls viewDidLoad function to restart the game
     }
     
     func updateAngle(x: Int, y:Int){//updates angle with the direction the aim view is pointing in
@@ -172,6 +201,17 @@ class ViewController: UIViewController, subviewDelegate {
         
         dynamicItemBehavior.addItem(ballView)
         self.dynamicItemBehavior.addLinearVelocity(CGPoint(x: angleX * 5, y: angleY * 5), for: ballView)//shoots the ball in the direction of the aim view
+        
+        let path = Bundle.main.path(forResource: "gunSound.wav", ofType: nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do{
+            gunSoundEffect = try AVAudioPlayer(contentsOf: url)
+            gunSoundEffect?.play()
+        }
+        catch{
+            
+        }
         
         //all balls collide with each other
         collisionBehavior = UICollisionBehavior(items: ballsArray)
@@ -194,10 +234,12 @@ class ViewController: UIViewController, subviewDelegate {
                 for bird in self.birdsArrayUI{
                    let index = self.birdsArrayUI.firstIndex(of: bird)
                     if ball.frame.intersects(bird.frame){
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)//vibrates the phone on ball collision with the birds
                         let before = self.view.subviews.count//counts the amount of
                         bird.removeFromSuperview()//removes the bird image from the view
                         self.birdsArrayUI.remove(at: index!)
                         let after = self.view.subviews.count
+                        
 
                         if(before != after){//compares the counts before and after the removal of the bird
                             self.gameScore += 1//imcrements the game score

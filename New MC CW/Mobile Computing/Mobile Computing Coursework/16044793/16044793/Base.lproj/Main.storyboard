@@ -15,17 +15,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aim.png" translatesAutoresizingMaskIntoConstraints="NO" id="yBl-Bo-EVB" customClass="DragView" customModule="_6044793" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="aim.png" translatesAutoresizingMaskIntoConstraints="NO" id="yBl-Bo-EVB" customClass="DragView" customModule="_6044793" customModuleProvider="target">
                                 <rect key="frame" x="20" y="151" width="75" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="yBl-Bo-EVB"/>
+                            </mask>
+                        </variation>
                     </view>
-                    <connections>
-                        <outlet property="aimView" destination="yBl-Bo-EVB" id="CMq-3P-MzV"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
